@@ -5,6 +5,7 @@ import Salary from "./components/Salary/Salary";
 import SalaryForm from "./components/SalaryForm/SalaryForm";
 
 function App() {
+  const [incomeInput, setIncomeInput] = useState(0);
   const [gross, setGross] = useState(0);
   const [net, setNet] = useState(0);
   const [rate, setRate] = useState(23300);
@@ -13,8 +14,12 @@ function App() {
     setNet(netSalary);
   };
 
-  const grossHandler = (e) => {
-    setGross(e.target.value);
+  const grossHandler = (grossSalary) => {
+    setGross(grossSalary);
+  };
+
+  const incomeInputHandler = (e) => {
+    setIncomeInput(e.target.value);
   };
 
   const rateHandler = (e) => {
@@ -25,14 +30,14 @@ function App() {
     <Container>
       <h1>Transfer GROSS to NET and vice versa</h1>
       <SalaryForm
-        net={net}
         netHandler={netHandler}
-        gross={gross}
-        grossHandler={grossHandler}
+        incomeInput={incomeInput}
+        incomeInputHandler={incomeInputHandler}
         rate={rate}
         rateHandler={rateHandler}
+        grossHandler={grossHandler}
       />
-      <Salary net={net} gross={gross} rate={rate} />
+      <Salary net={net} rate={rate} gross={gross} />
     </Container>
   );
 }

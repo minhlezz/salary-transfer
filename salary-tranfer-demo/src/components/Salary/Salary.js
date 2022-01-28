@@ -3,8 +3,7 @@ import classes from "./Salary.module.css";
 
 import Transfer from "./Transfer";
 
-const Salary = (props) => {
-  const { net, gross, rate } = props;
+const Salary = ({ net, gross, rate }) => {
   return (
     <section className={classes.salary}>
       <Transfer net={net} gross={gross} rate={rate} />

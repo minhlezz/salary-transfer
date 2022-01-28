@@ -5,14 +5,16 @@ import {
   personalIncomeTaxCalc,
   regionMinwageCalc,
   totalReductionCalc,
-} from "../Helpers/calculation";
+} from "../Helpers/convertGrossToNet";
 import Button from "../UI/Button";
 import Income from "./Income";
 import Insurance from "./Insurance";
 import Reduction from "./Reduction";
 
 const SalaryForm = (props) => {
-  const { gross, grossHandler, rate, rateHandler } = props;
+  const { rate, rateHandler } = props;
+
+  const [incomeInput, setIncomeInput] = useState(0);
 
   const [selectedPayfor, setSelectedPayfor] = useState("fullwage");
   const [otherInput, setOtherInput] = useState(0);
@@ -66,12 +68,16 @@ const SalaryForm = (props) => {
     setNumberDependant(e.target.value);
   };
 
+  const incomeInputHandler = (e) => {
+    setIncomeInput(e.target.value);
+  };
+
   const totalInsurance = () => {
     let total;
     let base;
 
     if (selectedPayfor === "fullwage") {
-      base = +gross;
+      base = +incomeInput;
     }
     if (selectedPayfor === "other") {
       base = +otherInput;
@@ -102,7 +108,7 @@ const SalaryForm = (props) => {
       numberDependant
     );
 
-    let incomeBeforeTax = +gross - insurances;
+    let incomeBeforeTax = +incomeInput - insurances;
 
     if (reductions > 0 && reductions < incomeBeforeTax) {
       incomeWasTax = incomeBeforeTax - reductions;
@@ -115,27 +121,59 @@ const SalaryForm = (props) => {
     }
 
     personalTax = personalIncomeTaxCalc(incomeWasTax);
-    return { incomeBeforeTax, personalTax };
+    const netSalary = incomeBeforeTax - personalTax;
+    return netSalary;
+  };
+
+  const incomeCalc = (input) => {
+    let incomeWasTax;
+    let personalTax;
+
+    const insurances = totalInsurance();
+    const reductions = totalReductionCalc(
+      personalReduction,
+      dependant,
+      numberDependant
+    );
+    let incomeBeforeTax = +input - insurances;
+
+    if (reductions > 0 && reductions < incomeBeforeTax) {
+      incomeWasTax = incomeBeforeTax - reductions;
+    }
+    if (reductions > 0 && reductions > incomeBeforeTax) {
+      incomeWasTax = 0;
+    }
+    if (reductions === 0) {
+      incomeWasTax = incomeBeforeTax;
+    }
+
+    personalTax = personalIncomeTaxCalc(incomeWasTax);
+    const netSalary = incomeBeforeTax - personalTax;
+    return netSalary;
   };
 
   const grossToNetHandler = (e) => {
     e.preventDefault();
-    const { incomeBeforeTax, personalTax } = incomeNoTaxCalc();
+    const netSalary = incomeNoTaxCalc();
 
-    const netSalary = incomeBeforeTax - personalTax;
+    props.grossHandler(incomeInput);
     props.netHandler(netSalary);
+  };
+
+  const netToGrossHandler = (e) => {
+    e.preventDefault();
+    props.netHandler(incomeInput);
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(e.target);
   };
 
   return (
     <form onSubmit={submitHandler}>
       <Income
-        gross={gross}
-        grossHandler={grossHandler}
+        incomeInput={incomeInput}
+        incomeInputHandler={incomeInputHandler}
         rate={rate}
         rateHandler={rateHandler}
       />
@@ -164,10 +202,8 @@ const SalaryForm = (props) => {
         numberDependantHandler={numberDependantHandler}
       />
       <div className="d-flex justify-center">
-        <Button type="submit" onClick={grossToNetHandler}>
-          GROSS &rarr; NET
-        </Button>
-        <Button>NET &rarr; GROSS</Button>
+        <Button onClick={grossToNetHandler}>GROSS &rarr; NET</Button>
+        <Button onClick={netToGrossHandler}>NET &rarr; GROSS</Button>
         <Button disabled>Print</Button>
       </div>
     </form>

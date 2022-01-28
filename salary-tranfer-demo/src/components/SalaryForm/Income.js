@@ -10,8 +10,8 @@ const Income = (props) => {
         id="vnd"
         size="large"
         preLabel="VND:"
-        value={props.gross}
-        onChange={props.grossHandler}
+        value={props.incomeInput}
+        onChange={props.incomeInputHandler}
       />
       <Input type="number" id="usd" size="medium" preLabel="USD:" />
       <Input
