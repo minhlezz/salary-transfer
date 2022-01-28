@@ -1,0 +1,8 @@
+.radio {
+    margin-right: 8px;
+    font-size: 13px;
+}
+
+.radio > input {
+    margin: 0 5px;
+}

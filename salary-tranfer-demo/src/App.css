@@ -1,0 +1,47 @@
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+.flex-row {
+  flex-direction: row;
+}
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-end {
+  align-items: end;
+}
+
+
+.bgGrey {
+  background-color: #EDEDED;
+}
+
+
+.w-70 {
+  width: 70px;
+}
+
+.w-100 {
+  width: 100px;
+}
+
+.w-60 {
+  width: 60px;
+}
+
+.w-40 {
+  width: 40px;
+}
+
+.w-30 {
+  width: 30px;
+}

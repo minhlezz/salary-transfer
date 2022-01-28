@@ -1,0 +1,23 @@
+.formControl {
+  margin-top: 20px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.formControl > h3 {
+  margin-bottom: 10px;
+}
+
+input {
+  font-size: 12px;
+}
+
+
+
+.smallInput {
+  max-width: 60px;
+}
+
+.largeInput {
+  max-width: 100px;
+}

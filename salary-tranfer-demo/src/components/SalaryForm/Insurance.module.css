@@ -1,0 +1,25 @@
+.insurance {
+  margin-top: 20px;
+  font-size: 13px;
+}
+
+h3 {
+  margin-bottom: 10px;
+}
+
+.option {
+  margin: 10px 0;
+}
+
+.infoImg {
+  display: inline-block;
+  height: 16px;
+  width: 16px;
+  margin-left: 6px;
+}
+
+.infoImg > img {
+  object-fit: cover;
+  height: auto;
+  width: 100%;
+}

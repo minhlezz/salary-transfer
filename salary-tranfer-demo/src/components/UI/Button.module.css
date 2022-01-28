@@ -1,0 +1,22 @@
+
+.button {
+    background: #f8f7f6 url('../../images/bg-button.png') 50% 50% repeat;
+    padding: 6px 12px;
+    margin: 0 4px;
+    color: #654b24;
+    border: 1px solid #cbc7bd;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+
+    cursor: pointer;
+    text-align: center;
+    overflow: hidden;
+
+}
+
+.button:hover {
+    border: 1px solid #654b24;
+    background: #654b24 url('../../images/bg-button-hover.png') 50% 50% repeat;
+    color: #fff;
+}
