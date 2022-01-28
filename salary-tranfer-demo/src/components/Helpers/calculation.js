@@ -59,28 +59,28 @@ export const incomeNoTaxCalc = (gross, totalInsurance, totalReduction) => {
   return gross - totalInsurance - totalReduction;
 };
 
-export const personalIncomeTaxCalc = (incomeBeforeTax) => {
+export const personalIncomeTaxCalc = (incomeWasTax) => {
   let payment;
-  if (incomeBeforeTax <= 5000000) {
-    payment = (incomeBeforeTax * 5) / 100;
-  } else if (incomeBeforeTax > 5000000 && incomeBeforeTax <= 10000000) {
-    payment = 250000 + (incomeBeforeTax - 5000000) * 0.1;
-  } else if (incomeBeforeTax > 10000000 && incomeBeforeTax <= 18000000) {
-    payment = 250000 + 500000 + (incomeBeforeTax - 10000000) * 0.15;
-  } else if (incomeBeforeTax > 18000000 && incomeBeforeTax <= 32000000) {
-    payment = 250000 + 500000 + 1200000 + (incomeBeforeTax - 18000000) * 0.2;
-  } else if (incomeBeforeTax > 32000000 && incomeBeforeTax <= 52000000) {
+  if (incomeWasTax <= 5000000) {
+    payment = (incomeWasTax * 5) / 100;
+  } else if (incomeWasTax > 5000000 && incomeWasTax <= 10000000) {
+    payment = 250000 + (incomeWasTax - 5000000) * 0.1;
+  } else if (incomeWasTax > 10000000 && incomeWasTax <= 18000000) {
+    payment = 250000 + 500000 + (incomeWasTax - 10000000) * 0.15;
+  } else if (incomeWasTax > 18000000 && incomeWasTax <= 32000000) {
+    payment = 250000 + 500000 + 1200000 + (incomeWasTax - 18000000) * 0.2;
+  } else if (incomeWasTax > 32000000 && incomeWasTax <= 52000000) {
     payment =
-      250000 + 500000 + 1200000 + 2800000 + (incomeBeforeTax - 32000000) * 0.25;
-  } else if (incomeBeforeTax > 52000000 && incomeBeforeTax <= 80000000) {
+      250000 + 500000 + 1200000 + 2800000 + (incomeWasTax - 32000000) * 0.25;
+  } else if (incomeWasTax > 52000000 && incomeWasTax <= 80000000) {
     payment =
       250000 +
       500000 +
       1200000 +
       2800000 +
       5000000 +
-      (incomeBeforeTax - 52000000) * 0.3;
-  } else if (incomeBeforeTax > 80000000) {
+      (incomeWasTax - 52000000) * 0.3;
+  } else if (incomeWasTax > 80000000) {
     payment =
       250000 +
       500000 +
@@ -88,7 +88,7 @@ export const personalIncomeTaxCalc = (incomeBeforeTax) => {
       2800000 +
       5000000 +
       8400000 +
-      (incomeBeforeTax - 80000000) * 0.35;
+      (incomeWasTax - 80000000) * 0.35;
   }
-  return { payment };
+  return payment;
 };

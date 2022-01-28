@@ -68,13 +68,21 @@ const SalaryForm = (props) => {
 
   const totalInsurance = () => {
     let total;
-    const socialCalc = insuranceOnMinWageCalc(social, gross, minwage);
-    const healthCalc = insuranceOnMinWageCalc(health, gross, minwage);
+    let base;
+
+    if (selectedPayfor === "fullwage") {
+      base = +gross;
+    }
+    if (selectedPayfor === "other") {
+      base = +otherInput;
+    }
+    const socialCalc = insuranceOnMinWageCalc(social, base, minwage);
+    const healthCalc = insuranceOnMinWageCalc(health, base, minwage);
     const regionMinwage = regionMinwageCalc(selectedRegion);
 
     const unemployedCalc = insunranceOnRegionCalc(
       unemployed,
-      gross,
+      base,
       regionMinwage
     );
 
@@ -85,26 +93,34 @@ const SalaryForm = (props) => {
 
   const incomeNoTaxCalc = () => {
     let incomeWasTax;
+    let personalTax;
+
     const insurances = totalInsurance();
     const reductions = totalReductionCalc(
       personalReduction,
       dependant,
       numberDependant
     );
+
     let incomeBeforeTax = +gross - insurances;
 
-    if (reductions > 0) {
+    if (reductions > 0 && reductions < incomeBeforeTax) {
       incomeWasTax = incomeBeforeTax - reductions;
-    } else {
+    }
+    if (reductions > 0 && reductions > incomeBeforeTax) {
+      incomeWasTax = 0;
+    }
+    if (reductions === 0) {
       incomeWasTax = incomeBeforeTax;
     }
-    return { incomeWasTax, incomeBeforeTax };
+
+    personalTax = personalIncomeTaxCalc(incomeWasTax);
+    return { incomeBeforeTax, personalTax };
   };
 
-  const grossToNetHandler = () => {
-    const { incomeWasTax, incomeBeforeTax } = incomeNoTaxCalc();
-
-    const { payment: personalTax } = personalIncomeTaxCalc(incomeWasTax);
+  const grossToNetHandler = (e) => {
+    e.preventDefault();
+    const { incomeBeforeTax, personalTax } = incomeNoTaxCalc();
 
     const netSalary = incomeBeforeTax - personalTax;
     props.netHandler(netSalary);
@@ -112,7 +128,7 @@ const SalaryForm = (props) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    grossToNetHandler();
+    console.log(e.target);
   };
 
   return (
@@ -148,7 +164,9 @@ const SalaryForm = (props) => {
         numberDependantHandler={numberDependantHandler}
       />
       <div className="d-flex justify-center">
-        <Button type="submit">GROSS &rarr; NET</Button>
+        <Button type="submit" onClick={grossToNetHandler}>
+          GROSS &rarr; NET
+        </Button>
         <Button>NET &rarr; GROSS</Button>
         <Button disabled>Print</Button>
       </div>
