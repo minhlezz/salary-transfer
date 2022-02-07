@@ -1,10 +1,6 @@
-export const toNumber = (number) => {
-  return Number(number);
-};
-
-export const insuranceOnMinWageCalc = (number, gross, minWage) => {
+export const insuranceOnMinWageCalc = (gross, percent, minWage) => {
   let result;
-  const percentage = number / 100;
+  const percentage = percent / 100;
   const minWageX20 = minWage * 20;
   if (gross > minWageX20) {
     result = minWageX20 * percentage;
@@ -35,9 +31,9 @@ export const regionMinwageCalc = (region) => {
   return min;
 };
 
-export const insunranceOnRegionCalc = (number, gross, regionMinwage) => {
+export const insunranceOnRegionCalc = (gross, percent, regionMinwage) => {
   let resultValue;
-  const percentage = number / 100;
+  const percentage = percent / 100;
   const regionX20 = regionMinwage * 20;
 
   if (gross > regionX20) {
@@ -169,4 +165,134 @@ export const personalIncomeTax = (taxableIncome) => {
       level7: remain,
     };
   }
+};
+
+export const socialEmployerPay = (employeePercentage, gross) => {
+  const remainPercentage = 25.5 - employeePercentage;
+  const socialPayment = (gross * remainPercentage) / 100;
+  return {
+    remainPercentage,
+    socialPayment,
+  };
+};
+
+export const healthEmployerPay = (employeePercentage, gross) => {
+  const remainPercentage = 4.5 - employeePercentage;
+  const healthPayment = (gross * remainPercentage) / 100;
+
+  return {
+    remainPercentage,
+    healthPayment,
+  };
+};
+
+export const unemployedEmployerPay = (employeePercentage, gross) => {
+  const remainPercentage = 2 - employeePercentage;
+  const unemployedPayment = (gross * remainPercentage) / 100;
+
+  return {
+    remainPercentage,
+    unemployedPayment,
+  };
+};
+
+export const grossToNetConvert = (formValues) => {
+  let totalInsurance;
+  let totalReductions;
+  let incomeBeforeTax;
+  let taxableIncome;
+  let personalTax;
+  let netSalary;
+
+  const {
+    inputValue,
+    // payfor,
+    minimumWage,
+    socialInsurancePercent,
+    healthInsurancePercent,
+    unemployedInsurancePercent,
+    region,
+    personal,
+    dependant,
+    numberDependant,
+  } = formValues;
+
+  const socialPayment = insuranceOnMinWageCalc(
+    inputValue,
+    socialInsurancePercent,
+    minimumWage
+  );
+  const healthPayment = insuranceOnMinWageCalc(
+    inputValue,
+    healthInsurancePercent,
+    minimumWage
+  );
+  const unemployedPayment = unemployedPaymentCalc(
+    inputValue,
+    unemployedInsurancePercent,
+    region
+  );
+
+  totalInsurance = socialPayment + healthPayment + unemployedPayment;
+
+  incomeBeforeTax = incomeBeforeTaxCalc(inputValue, totalInsurance);
+
+  const { reductions, totalDependant: dependantReduction } = totalReductionCalc(
+    personal,
+    dependant,
+    numberDependant
+  );
+
+  totalReductions = reductions;
+
+  taxableIncome = taxableIncomeCalc(totalReductions, incomeBeforeTax);
+
+  personalTax = personalIncomeTaxCalc(taxableIncome);
+
+  netSalary = incomeBeforeTax - personalTax;
+
+  return {
+    grossSalary: inputValue,
+    dependantReduction,
+    socialPayment,
+    healthPayment,
+    unemployedPayment,
+    incomeBeforeTax,
+    taxableIncome,
+    personalTax,
+    netSalary,
+  };
+};
+
+const incomeBeforeTaxCalc = (incomeInput, totalInsurance) => {
+  return incomeInput - totalInsurance;
+};
+
+const unemployedPaymentCalc = (
+  inputValue,
+  unemployedInsurancePercent,
+  region
+) => {
+  const regionMinwage = regionMinwageCalc(region);
+  const unemployedPayment = insunranceOnRegionCalc(
+    inputValue,
+    unemployedInsurancePercent,
+    regionMinwage
+  );
+
+  return unemployedPayment;
+};
+
+const taxableIncomeCalc = (reductions, incomeBeforeTax) => {
+  let result;
+  if (reductions > 0 && reductions < incomeBeforeTax) {
+    result = incomeBeforeTax - reductions;
+  }
+  if (reductions > 0 && reductions > incomeBeforeTax) {
+    result = 0;
+  }
+  if (reductions === 0) {
+    result = incomeBeforeTax;
+  }
+  return result;
 };

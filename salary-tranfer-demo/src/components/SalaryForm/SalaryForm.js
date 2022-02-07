@@ -1,18 +1,14 @@
 import React, { useContext, useState } from "react";
-import {
-  insunranceOnRegionCalc,
-  insuranceOnMinWageCalc,
-  personalIncomeTaxCalc,
-  regionMinwageCalc,
-  totalReductionCalc,
-} from "../Helpers/convertGrossToNet";
+import FormContext from "../../store/form-context";
+
 import Button from "../UI/Button";
 import Income from "./Income";
 import Insurance from "./Insurance";
 import Reduction from "./Reduction";
-import FormContext from "../../store/form-context";
 
 const SalaryForm = (props) => {
+  const formCtx = useContext(FormContext);
+
   const { rate, rateHandler } = props;
 
   const [incomeInput, setIncomeInput] = useState(0);
@@ -30,8 +26,6 @@ const SalaryForm = (props) => {
   const [personalReduction, setPersonalReduction] = useState(0);
   const [dependant, setDependant] = useState(0);
   const [numberDependant, setNumberDependant] = useState(0);
-
-  const formCtx = useContext(FormContext);
 
   const payforChangeHandler = (e) => {
     setSelectedPayfor(e.target.value);
@@ -75,128 +69,36 @@ const SalaryForm = (props) => {
     setIncomeInput(e.target.value);
   };
 
-  const totalInsurance = () => {
-    let total;
-    let base;
-
-    if (selectedPayfor === "fullwage") {
-      base = +incomeInput;
-    }
-    if (selectedPayfor === "other") {
-      base = +otherInput;
-    }
-
-    const socialCalc = insuranceOnMinWageCalc(social, base, minwage);
-    const healthCalc = insuranceOnMinWageCalc(health, base, minwage);
-    const regionMinwage = regionMinwageCalc(selectedRegion);
-  
-    const unemployedCalc = insunranceOnRegionCalc(
-      unemployed,
-      base,
-      regionMinwage
-    );
-
-    total = socialCalc + healthCalc + unemployedCalc;
-
-    return {
-      totalInsuranceCalc: total,
-      socialCalc,
-      healthCalc,
-      unemployedCalc,
-    };
-  };
-
-  const incomeNoTaxCalc = () => {
-    let incomeWasTax;
-    let personalTax;
-
-    const { totalInsuranceCalc, socialCalc, healthCalc, unemployedCalc } =
-      totalInsurance();
-    const { reductions, totalDependant } = totalReductionCalc(
-      personalReduction,
-      dependant,
-      numberDependant
-    );
-
-    let incomeBeforeTax = +incomeInput - totalInsuranceCalc;
-
-    if (reductions > 0 && reductions < incomeBeforeTax) {
-      incomeWasTax = incomeBeforeTax - reductions;
-    }
-    if (reductions > 0 && reductions > incomeBeforeTax) {
-      incomeWasTax = 0;
-    }
-    if (reductions === 0) {
-      incomeWasTax = incomeBeforeTax;
-    }
-
-    personalTax = personalIncomeTaxCalc(incomeWasTax);
-    const netSalary = incomeBeforeTax - personalTax;
-    formCtx.grossToNet({
-      gross: +incomeInput,
-      socialInsurance: {
-        socialPercentage: social,
-        totalSocial: socialCalc,
-      },
-      healthInsurance: {
-        healthPercentage: health,
-        totalHealth: healthCalc,
-      },
-      UnemployedInsurance: {
-        unemployedPercentage: unemployed,
-        totalUnemployed: unemployedCalc,
-      },
-      incomeBeforeTax: incomeBeforeTax,
-      personalReduction: +personalReduction,
-      dependantReduction: {
-        dependantNumber: +numberDependant,
-        totalDependant: totalDependant,
-      },
-      taxableIncome: incomeWasTax,
-      personalIncomeTax: personalTax,
-      net: netSalary,
-    });
-    return netSalary;
-  };
-
-  const incomeCalc = (input) => {
-    let incomeWasTax;
-    let personalTax;
-
-    const insurances = totalInsurance();
-    const reductions = totalReductionCalc(
-      personalReduction,
-      dependant,
-      numberDependant
-    );
-    let incomeBeforeTax = +input - insurances;
-
-    if (reductions > 0 && reductions < incomeBeforeTax) {
-      incomeWasTax = incomeBeforeTax - reductions;
-    }
-    if (reductions > 0 && reductions > incomeBeforeTax) {
-      incomeWasTax = 0;
-    }
-    if (reductions === 0) {
-      incomeWasTax = incomeBeforeTax;
-    }
-
-    personalTax = personalIncomeTaxCalc(incomeWasTax);
-    const netSalary = incomeBeforeTax - personalTax;
-    return netSalary;
-  };
-
   const grossToNetHandler = (e) => {
     e.preventDefault();
-    const netSalary = incomeNoTaxCalc();
-
-    props.grossHandler(incomeInput);
-    props.netHandler(netSalary);
+    formCtx.grossToNet({
+      inputValue: +incomeInput,
+      payfor: selectedPayfor,
+      minimumWage: +minwage,
+      socialInsurancePercent: social,
+      healthInsurancePercent: health,
+      unemployedInsurancePercent: unemployed,
+      region: selectedRegion,
+      personal: +personalReduction,
+      dependant: +dependant,
+      numberDependant: +numberDependant,
+    });
   };
 
   const netToGrossHandler = (e) => {
     e.preventDefault();
-    props.netHandler(incomeInput);
+    formCtx.netToGross({
+      inputValue: +incomeInput,
+      payfor: selectedPayfor,
+      minimumWage: +minwage,
+      socialInsurancePercent: social,
+      healthInsurancePercent: health,
+      unemployedInsurancePercent: unemployed,
+      region: selectedRegion,
+      personal: +personalReduction,
+      dependant: +dependant,
+      numberDependant: +numberDependant,
+    });
   };
 
   const submitHandler = (e) => {

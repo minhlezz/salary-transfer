@@ -1,16 +1,18 @@
 import React from "react";
 import classes from "./Salary.module.css";
 
-import SalaryDetail from "./SalaryDetail";
 import Transfer from "./Transfer";
-import PersonalIncomeTax from "./PersonalIncomeTax";
+import SalaryDetail from "./SalaryDetail";
+// import PersonalIncomeTax from "./PersonalIncomeTax";
+// import EmployerPay from "./EmployerPay";
 
-const Salary = ({ net, gross, rate }) => {
+const Salary = ({ rate }) => {
   return (
     <section className={classes.salary}>
-      <Transfer net={net} gross={gross} rate={rate} />
+      <Transfer rate={rate} />
       <SalaryDetail />
-      <PersonalIncomeTax />
+      {/* <PersonalIncomeTax />
+      <EmployerPay /> */}
     </section>
   );
 };
