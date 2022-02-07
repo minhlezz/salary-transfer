@@ -1,5 +1,10 @@
 import React, { useReducer } from "react";
-import { grossToNetConvert } from "../components/Helpers/convertGrossToNet";
+import {
+  grossToNetConvert,
+  healthEmployerPay,
+  socialEmployerPay,
+  unemployedEmployerPay,
+} from "../components/Helpers/convertGrossToNet";
 import { netToCrossConvert } from "../components/Helpers/convertNetToGross";
 import FormContext from "./form-context";
 
@@ -40,6 +45,21 @@ const defaultFormState = {
     taxableIncome: 0,
     personalIncomeTax: 0,
     netSalary: 0,
+  },
+  employerPay: {
+    grossSalary: 0,
+    socialInsurance: {
+      percent: 0,
+      payment: 0,
+    },
+    healthInsurance: {
+      percent: 0,
+      payment: 0,
+    },
+    unemployedInsurance: {
+      percent: 0,
+      payment: 0,
+    },
   },
 };
 
@@ -82,6 +102,38 @@ const formReducer = (state, action) => {
       personalIncomeTax: personalTax,
       netSalary,
     };
+    const { remainPercentage: socialPercent, socialEmployerPayment } =
+      socialEmployerPay(
+        updatedForm.socialInsurancePercent,
+        updatedForm.inputValue
+      );
+
+    const { remainPercentage: healthPercent, healthEmployerPayment } =
+      healthEmployerPay(
+        updatedForm.healthInsurancePercent,
+        updatedForm.inputValue
+      );
+    const { remainPercentage: unemployedPercent, unemployedEmployerPayment } =
+      unemployedEmployerPay(
+        updatedForm.unemployedInsurancePercent,
+        updatedForm.inputValue
+      );
+
+    const updatedEmployerPay = {
+      grossSalary: updatedForm.inputValue,
+      socialInsurance: {
+        percent: socialPercent,
+        payment: socialEmployerPayment,
+      },
+      healthInsurance: {
+        percent: healthPercent,
+        payment: healthEmployerPayment,
+      },
+      unemployedInsurance: {
+        percent: unemployedPercent,
+        payment: unemployedEmployerPayment,
+      },
+    };
     return {
       formValues: updatedForm,
       explainInDetail: updatedExplainInDetail,
@@ -89,6 +141,7 @@ const formReducer = (state, action) => {
         gross: updatedForm.inputValue,
         netSalary,
       },
+      employerPay: updatedEmployerPay,
     };
   }
   if (action.type === "NET_TO_GROSS") {
@@ -135,6 +188,38 @@ const formReducer = (state, action) => {
       personalIncomeTax: personalTax,
       netSalary,
     };
+
+    const { remainPercentage: socialPercent, socialEmployerPayment } =
+      socialEmployerPay(
+        updatedGrossToForm.socialInsurancePercent,
+        updatedGrossToForm.inputValue
+      );
+    const { remainPercentage: healthPercent, healthEmployerPayment } =
+      healthEmployerPay(
+        updatedGrossToForm.healthInsurancePercent,
+        updatedGrossToForm.inputValue
+      );
+    const { remainPercentage: unemployedPercent, unemployedEmployerPayment } =
+      unemployedEmployerPay(
+        updatedGrossToForm.unemployedInsurancePercent,
+        updatedGrossToForm.inputValue
+      );
+
+    const updatedEmployerPay = {
+      grossSalary: updatedGrossToForm.inputValue,
+      socialInsurance: {
+        percent: socialPercent,
+        payment: socialEmployerPayment,
+      },
+      healthInsurance: {
+        percent: healthPercent,
+        payment: healthEmployerPayment,
+      },
+      unemployedInsurance: {
+        percent: unemployedPercent,
+        payment: unemployedEmployerPayment,
+      },
+    };
     return {
       formValues: updatedGrossToForm,
       explainInDetail: updatedExplainInDetail,
@@ -142,6 +227,7 @@ const formReducer = (state, action) => {
         gross: updatedGrossToForm.inputValue,
         netSalary,
       },
+      employerPay: updatedEmployerPay,
     };
   }
 };
@@ -170,6 +256,7 @@ const FormProvider = (props) => {
     formValues: formState.formValues,
     explainInDetail: formState.explainInDetail,
     transfer: formState.transfer,
+    employerPay: formState.employerPay,
     grossToNet: grossToNetHandler,
     netToGross: netToGrossHandler,
   };

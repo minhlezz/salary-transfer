@@ -169,30 +169,30 @@ export const personalIncomeTax = (taxableIncome) => {
 
 export const socialEmployerPay = (employeePercentage, gross) => {
   const remainPercentage = 25.5 - employeePercentage;
-  const socialPayment = (gross * remainPercentage) / 100;
+  const socialEmployerPayment = (gross * remainPercentage) / 100;
   return {
     remainPercentage,
-    socialPayment,
+    socialEmployerPayment,
   };
 };
 
 export const healthEmployerPay = (employeePercentage, gross) => {
   const remainPercentage = 4.5 - employeePercentage;
-  const healthPayment = (gross * remainPercentage) / 100;
+  const healthEmployerPayment = (gross * remainPercentage) / 100;
 
   return {
     remainPercentage,
-    healthPayment,
+    healthEmployerPayment,
   };
 };
 
 export const unemployedEmployerPay = (employeePercentage, gross) => {
   const remainPercentage = 2 - employeePercentage;
-  const unemployedPayment = (gross * remainPercentage) / 100;
+  const unemployedEmployerPayment = (gross * remainPercentage) / 100;
 
   return {
     remainPercentage,
-    unemployedPayment,
+    unemployedEmployerPayment,
   };
 };
 
@@ -294,5 +294,6 @@ const taxableIncomeCalc = (reductions, incomeBeforeTax) => {
   if (reductions === 0) {
     result = incomeBeforeTax;
   }
+
   return result;
 };

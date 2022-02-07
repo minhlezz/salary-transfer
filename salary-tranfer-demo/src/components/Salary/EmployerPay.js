@@ -5,13 +5,10 @@ import { formatVND } from "../Helpers/currency-convert";
 const EmployerPay = () => {
   const formCtx = useContext(FormContext);
 
-  const {
-    gross,
-    employerPay: { socialInsurance, healthInsurance, unemployedInsurance },
-  } = formCtx.item;
-
+  const { grossSalary, socialInsurance, healthInsurance, unemployedInsurance } =
+    formCtx.employerPay;
   let total =
-    gross +
+    grossSalary +
     socialInsurance.payment +
     healthInsurance.payment +
     unemployedInsurance.payment;
@@ -23,20 +20,20 @@ const EmployerPay = () => {
         <tbody>
           <tr>
             <th>GROSS salary</th>
-            <td>{formatVND(gross)}</td>
+            <td>{formatVND(grossSalary)}</td>
           </tr>
           <tr>
-            <th>Social insurance ({socialInsurance.percentage}%)</th>
+            <th>Social insurance ({socialInsurance.percent}%)</th>
             <td>{formatVND(socialInsurance.payment)}</td>
           </tr>
           <tr>
-            <th>Health insurance ({healthInsurance.percentage}%)</th>
+            <th>Health insurance ({healthInsurance.percent}%)</th>
             <td>{formatVND(healthInsurance.payment)}</td>
           </tr>
           <tr>
             <th>
-              Unemployment insurance ({unemployedInsurance.percentage}% - lương
-              tối thiểu vùng)
+              Unemployment insurance ({unemployedInsurance.percent}% - lương tối
+              thiểu vùng)
             </th>
             <td>{formatVND(unemployedInsurance.payment)}</td>
           </tr>

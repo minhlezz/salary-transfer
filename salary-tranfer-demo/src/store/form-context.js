@@ -38,6 +38,21 @@ const FormContext = React.createContext({
     personalIncomeTax: 0,
     netSalary: 0,
   },
+  employerPay: {
+    grossSalary: 0,
+    socialInsurance: {
+      payment: 0,
+      percent: 0,
+    },
+    healthInsurance: {
+      payment: 0,
+      percent: 0,
+    },
+    unemployedInsurance: {
+      payment: 0,
+      percent: 0,
+    },
+  },
   grossToNet: () => {},
   netToGross: () => {},
 });

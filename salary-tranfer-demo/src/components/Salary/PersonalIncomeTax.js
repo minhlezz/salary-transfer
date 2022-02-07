@@ -5,8 +5,7 @@ import { formatVND } from "../Helpers/currency-convert";
 
 const PersonalIncomeTax = () => {
   const formCtx = useContext(FormContext);
-
-  const { taxableIncome } = formCtx.item;
+  const { taxableIncome } = formCtx.explainInDetail;
   const taxableLevel = personalIncomeTax(taxableIncome);
 
   return (
