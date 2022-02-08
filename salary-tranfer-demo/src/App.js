@@ -1,9 +1,10 @@
 import { useState } from "react";
-import "./App.css";
+
 import Container from "./components/UI/Container";
 import Salary from "./components/Salary/Salary";
 import SalaryForm from "./components/SalaryForm/SalaryForm";
 import FormProvider from "./store/FormProvider";
+import "./App.css";
 
 function App() {
   const [rate, setRate] = useState(23300);

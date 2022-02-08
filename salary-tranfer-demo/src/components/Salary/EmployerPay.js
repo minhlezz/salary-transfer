@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import FormContext from "../../store/form-context";
 import { formatVND } from "../Helpers/currency-convert";
+import Table from "../UI/Table/Table";
 
 const EmployerPay = () => {
   const formCtx = useContext(FormContext);
@@ -13,36 +14,39 @@ const EmployerPay = () => {
     healthInsurance.payment +
     unemployedInsurance.payment;
 
+  const datasource = [
+    {
+      key: "1",
+      title: "GROSS salary",
+      value: formatVND(grossSalary),
+    },
+    {
+      key: "2",
+      title: `Social insurance (${socialInsurance.percent}%`,
+      value: formatVND(socialInsurance.payment),
+    },
+    {
+      key: "3",
+      title: `Health insurance (${healthInsurance.percent}%)`,
+      value: formatVND(healthInsurance.payment),
+    },
+    {
+      key: "4",
+      title: `Unemployment insurance (${unemployedInsurance.percent}% - lương tối
+        thiểu vùng)`,
+      value: formatVND(unemployedInsurance.payment),
+    },
+    {
+      key: "5",
+      title: "Total",
+      value: formatVND(total),
+    },
+  ];
+
   return (
     <React.Fragment>
       <h3>Employer pay (USD)</h3>
-      <table>
-        <tbody>
-          <tr>
-            <th>GROSS salary</th>
-            <td>{formatVND(grossSalary)}</td>
-          </tr>
-          <tr>
-            <th>Social insurance ({socialInsurance.percent}%)</th>
-            <td>{formatVND(socialInsurance.payment)}</td>
-          </tr>
-          <tr>
-            <th>Health insurance ({healthInsurance.percent}%)</th>
-            <td>{formatVND(healthInsurance.payment)}</td>
-          </tr>
-          <tr>
-            <th>
-              Unemployment insurance ({unemployedInsurance.percent}% - lương tối
-              thiểu vùng)
-            </th>
-            <td>{formatVND(unemployedInsurance.payment)}</td>
-          </tr>
-          <tr className="bgGrey">
-            <th>Total</th>
-            <td>{formatVND(total)}</td>
-          </tr>
-        </tbody>
-      </table>
+      <Table datasource={datasource} />
     </React.Fragment>
   );
 };

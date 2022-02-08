@@ -20,11 +20,9 @@
   align-items: end;
 }
 
-
 .bgGrey {
-  background-color: #EDEDED;
+  background-color: #ededed;
 }
-
 
 .w-70 {
   width: 70px;
@@ -45,3 +43,5 @@
 .w-30 {
   width: 30px;
 }
+
+
