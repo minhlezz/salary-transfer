@@ -3,9 +3,8 @@ import TableHead from "./TableHead";
 import TableRow from "./TableRow";
 
 const Table = (props) => {
-
   return (
-    <table>
+    <table className={props.className}>
       <TableHead headings={props.columns} />
       <TableRow data={props.datasource} />
     </table>

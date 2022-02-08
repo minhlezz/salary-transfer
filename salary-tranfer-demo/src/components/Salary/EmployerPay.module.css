@@ -1,0 +1,11 @@
+.employerPay {
+}
+
+
+.employerPay > tbody > tr > td:first-child {
+  font-weight: bold;
+}
+
+.employerPay > tbody > tr:last-child {
+  background-color: #ededed;
+}

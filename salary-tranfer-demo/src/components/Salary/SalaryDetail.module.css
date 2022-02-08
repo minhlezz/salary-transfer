@@ -1,12 +1,10 @@
 table {
-    width: 100%;
-    margin: 8px 0;
-    border-collapse: collapse;
+  width: 100%;
+  margin: 8px 0;
+  border-collapse: collapse;
 }
 
-
-table
-th,
+table th,
 td {
   border-collapse: collapse;
   border: #cccccc 1px solid;
@@ -25,5 +23,16 @@ th > span {
 }
 
 .title {
-    margin: 8px 0;
+  margin: 8px 0;
+}
+
+.explainInDetail > tbody > tr:first-child,
+.explainInDetail > tbody > tr:nth-child(5),
+.explainInDetail > tbody > tr:nth-child(8),
+.explainInDetail > tbody > tr:last-child {
+  background-color: #EDEDED;
+}
+
+.explainInDetail > tbody > tr > td:first-child {
+  font-weight: bold;
 }

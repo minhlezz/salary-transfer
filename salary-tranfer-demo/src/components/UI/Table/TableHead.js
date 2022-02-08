@@ -1,5 +1,5 @@
 import React from "react";
-
+import classes from "./Table.module.css";
 const convertObjectToArray = (obj) => {
   let newArray = [];
   if (!obj) return;
@@ -13,7 +13,7 @@ const TableHead = ({ headings }) => {
   const headers = convertObjectToArray(headings);
 
   return (
-    <thead>
+    <thead className={classes.backgroundGrey}>
       <tr>
         {headers &&
           headers.map((header, index) => <th key={index}>{header}</th>)}

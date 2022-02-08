@@ -1,4 +1,5 @@
 import React from "react";
+import classes from "./Table.module.css";
 
 const convertObjectElementsToArrayObject = (object) => {
   let newArrayObject = [];
@@ -26,11 +27,7 @@ const TableRow = (props) => {
     );
   });
 
-  return (
-    <tbody>
-      {tRow}
-    </tbody>
-  );
+  return <tbody>{tRow}</tbody>;
 };
 
 export default TableRow;

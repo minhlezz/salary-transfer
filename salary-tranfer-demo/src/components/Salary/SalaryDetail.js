@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import "./SalaryDetail.module.css";
 import FormContext from "../../store/form-context";
-import { formatVND } from "../Helpers/currency-convert";
 import Table from "../UI/Table/Table";
+import { formatVND } from "../Helpers/currency-convert";
+import classes from "./SalaryDetail.module.css";
 
 const SalaryDetail = () => {
   const formCtx = useContext(FormContext);
@@ -76,7 +77,7 @@ const SalaryDetail = () => {
   return (
     <React.Fragment>
       <h3>Explain in detail (USD)</h3>
-      <Table datasource={datasource} />
+      <Table datasource={datasource} className={classes.explainInDetail} />
     </React.Fragment>
   );
 };
