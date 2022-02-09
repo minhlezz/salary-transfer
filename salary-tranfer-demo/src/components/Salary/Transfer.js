@@ -1,14 +1,13 @@
-import React, { useContext } from "react";
-import FormContext from "../../store/form-context";
+import React from "react";
 import {
   convertToUSD,
   formatUSD,
   formatVND,
 } from "../Helpers/currency-convert";
 import classes from "./Transfer.module.css";
-const Transfer = ({ rate }) => {
-  const formCtx = useContext(FormContext);
-  const { gross, netSalary: net } = formCtx.transfer;
+const Transfer = (props) => {
+  const { grossSalary: gross, netSalary: net } = props.salaryInfo.result;
+  const { rateExchange: rate } = props.salaryInfo.income;
   const grossToUSD = convertToUSD(gross, rate);
   const netToUSD = convertToUSD(net, rate);
 

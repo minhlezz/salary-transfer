@@ -1,12 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./SalaryDetail.module.css";
-import FormContext from "../../store/form-context";
 import Table from "../UI/Table/Table";
 import { formatVND } from "../Helpers/currency-convert";
 import classes from "./SalaryDetail.module.css";
 
-const SalaryDetail = () => {
-  const formCtx = useContext(FormContext);
+const SalaryDetail = (props) => {
   const {
     grossSalary,
     socialInsurance,
@@ -18,7 +16,7 @@ const SalaryDetail = () => {
     taxableIncome,
     personalIncomeTax,
     netSalary,
-  } = formCtx.explainInDetail;
+  } = props.explainInDetail;
 
   const datasource = [
     {

@@ -1,12 +1,10 @@
-import React, { useContext } from "react";
-import FormContext from "../../store/form-context";
+import React from "react";
 import { personalIncomeTax } from "../Helpers/convertGrossToNet";
 import { formatVND } from "../Helpers/currency-convert";
 import Table from "../UI/Table/Table";
 
-const PersonalIncomeTax = () => {
-  const formCtx = useContext(FormContext);
-  const { taxableIncome } = formCtx.explainInDetail;
+const PersonalIncomeTax = (props) => {
+  const { taxableIncome } = props.explainInDetail;
   const taxableLevel = personalIncomeTax(taxableIncome);
   const columns = [
     {
@@ -73,7 +71,7 @@ const PersonalIncomeTax = () => {
   return (
     <React.Fragment>
       <h3>(*) Detail of personal income tax (USD)</h3>
-      
+
       <Table columns={columns} datasource={datasource} />
     </React.Fragment>
   );

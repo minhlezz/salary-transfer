@@ -14,16 +14,16 @@ export const insuranceOnMinWageCalc = (gross, percent, minWage) => {
 export const regionMinwageCalc = (region) => {
   let min;
   switch (region) {
-    case "one":
+    case "I":
       min = 4420000;
       break;
-    case "two":
+    case "II":
       min = 3920000;
       break;
-    case "three":
+    case "III":
       min = 3430000;
       break;
-    case "four":
+    case "IV":
       min = 3070000;
       break;
     default:
@@ -196,6 +196,26 @@ export const unemployedEmployerPay = (employeePercentage, gross) => {
   };
 };
 
+export const employerPayCalc = (formValues) => {
+  const { remainPercentage: socialPercent, socialEmployerPayment } =
+    socialEmployerPay(formValues.socialInsurancePercent, formValues.inputValue);
+  const { remainPercentage: healthPercent, healthEmployerPayment } =
+    healthEmployerPay(formValues.healthInsurancePercent, formValues.inputValue);
+  const { remainPercentage: unemployedPercent, unemployedEmployerPayment } =
+    unemployedEmployerPay(
+      formValues.unemployedInsurancePercent,
+      formValues.inputValue
+    );
+  return {
+    socialPercent,
+    socialEmployerPayment,
+    healthPercent,
+    healthEmployerPayment,
+    unemployedPercent,
+    unemployedEmployerPayment,
+  };
+};
+
 export const grossToNetConvert = (formValues) => {
   let totalInsurance;
   let totalReductions;
@@ -205,8 +225,8 @@ export const grossToNetConvert = (formValues) => {
   let netSalary;
 
   const {
-    inputValue,
     // payfor,
+    inputValue,
     minimumWage,
     socialInsurancePercent,
     healthInsurancePercent,

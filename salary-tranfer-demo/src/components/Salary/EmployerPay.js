@@ -1,14 +1,11 @@
-import React, { useContext } from "react";
-import FormContext from "../../store/form-context";
+import React from "react";
 import { formatVND } from "../Helpers/currency-convert";
 import Table from "../UI/Table/Table";
 import classes from "./EmployerPay.module.css";
 
-const EmployerPay = () => {
-  const formCtx = useContext(FormContext);
-
+const EmployerPay = (props) => {
   const { grossSalary, socialInsurance, healthInsurance, unemployedInsurance } =
-    formCtx.employerPay;
+    props.employerPay;
   let total =
     grossSalary +
     socialInsurance.payment +
