@@ -1,0 +1,27 @@
+@import "~antd/dist/antd.css";
+
+.bg-white {
+  background-color: #fff;
+}
+
+.bg-grey {
+  background-color: #ededed;
+}
+
+.text-red {
+  color: red;
+}
+
+.table-row-light {
+  background-color: #ffffff;
+}
+
+
+.table-row-dark {
+  background-color: #fafafa;
+}
+
+.table-row-dark > td:first-child {
+  font-weight: bold;
+}
+
